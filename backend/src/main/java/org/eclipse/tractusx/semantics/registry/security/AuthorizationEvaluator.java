@@ -49,11 +49,11 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public class AuthorizationEvaluator {
+public abstract class AuthorizationEvaluator {
 
    private final String clientId;
 
-   public AuthorizationEvaluator( String clientId ) {
+   protected AuthorizationEvaluator( String clientId ) {
       this.clientId = clientId;
    }
 
@@ -85,34 +85,16 @@ public class AuthorizationEvaluator {
       return containsRole( ROLE_WRITE_ACCESS_RULES );
    }
 
-   private boolean containsRole( String role ) {
-      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-      if ( !(authentication instanceof JwtAuthenticationToken) ) {
-         return false;
-      }
+   protected abstract boolean containsRole( String role ) ;
 
-      JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) (authentication);
-      Map<String, Object> claims = jwtAuthenticationToken.getToken().getClaims();
-
-      Object resourceAccess = claims.get( "resource_access" );
-      if ( !(resourceAccess instanceof Map) ) {
-         return false;
-      }
-
-      Object resource = ((Map<String, Object>) resourceAccess).get( clientId );
-      if ( !(resource instanceof Map) ) {
-         return false;
-      }
-
-      Object roles = ((Map<String, Object>) resource).get( "roles" );
-      if ( !(roles instanceof Collection) ) {
-         return false;
-      }
-
-      Collection<String> rolesList = (Collection<String>) roles;
-      return rolesList.contains( role );
+   /**
+    * get the client id
+    * @return the client id
+    */
+   protected String getClientId() {
+	   return clientId;
    }
-
+   
    /**
     * Represents the roles defined for the registry.
     */
