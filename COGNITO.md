@@ -1,10 +1,6 @@
-<!--
-    Copyright (c) 2024 Draexlmaier Group
--->
-
 # AWS Cognito as Identity Provider
-At the moment DTR can use only Keycloak as an Identity Provider for all clients that want to access the registry. Client must fetch a token from Keycloak and send it together with the request.
-When running the DTR in AWS it makes sense to use the existing managed Cognito service already provided by AWS as an identity provider.  
+DTR can support Keycloak and AWS Cognito as an Identity Provider for all clients that want to access the registry. 
+Client must fetch a token and send it together with the request.
 Cognito behaves somehow different than Keycloak so some code modifications were necessary to use Cognito as an Identity Provider for DTR.
 
 ## Configuring AWS Cognito
@@ -133,33 +129,5 @@ This could look:
     }
 
 The OAuth properies point to the Cognito service including the id, secret and the scope.
-
-## Implementation
-A new abstract class was introducted `org.eclipse.tractusx.semantics.registry.security.AuthorizationEvaluator`.
-This class is the base for different authentication evaluators.
-The keycloak specific things were moved to a new class `org.eclipse.tractusx.semantics.registry.security.KeycloakAuthorizationEvaluator`
-and the Cognito specific things to `org.eclipse.tractusx.semantics.registry.security.CognitoAuthorizationEvaluator`
-
-A new unit test was introduced to test the Cognito authenticator including also a config file for that test.
-If no identity provider is set in the application configuration, then keycloak is the default.
-    
-## Code Changes
-Added   
-- `org.eclipse.tractusx.semantics.registry.security.CognitoAuthorizationEvaluator`   
-- `org.eclipse.tractusx.semantics.registry.security.KeycloakAuthorizationEvaluator` 
-- `src/test/resources/application-cognito-test.yml`
-
-Changed 
-- `org.eclipse.tractusx.semantics.registry.security.AuthorizationEvaluator`
-- `org.eclipse.tractusx.semantics.registry.security.OAuthSecurityConfig`
-- `org.eclipse.tractusx.semantics.RegistryProperties`
-- `org.eclipse.tractusx.semantics.registry.JwtTokenFactory`
-- `org.eclipse.tractusx.semantics.registry.CognitoApiSecurityTest`
-
-
-- `INSTALL.md`
-- `charts/registry/README.md`
-- `charts/registry/values.yaml`
-- `charts/registry/templates/registry/registry-secret.md`
 
 

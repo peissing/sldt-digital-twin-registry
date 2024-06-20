@@ -97,9 +97,6 @@ public class OAuthSecurityConfig {
 
 	/**
 	 * enum containing the possible identity providers for the DTR
-	 *
-	 * @author peissing
-	 *
 	 */
 	public enum IdentityProvider {
 
@@ -126,13 +123,13 @@ public class OAuthSecurityConfig {
 		 * @param key the key to search
 		 * @return the key as enum
 		 */
+		
 		public static IdentityProvider getIdentityProvider(final String identityProviderName) {
-			for (final IdentityProvider identityProvider : IdentityProvider.values()) {
-				if (identityProvider.toString().equalsIgnoreCase(identityProviderName)) {
-					return identityProvider;
-				}
+			try {
+				return IdentityProvider.valueOf(identityProviderName.toUpperCase());
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException("Unknown identityProvider: " + identityProviderName, e);
 			}
-			throw new IllegalArgumentException("Unknown identityProvider:" + identityProviderName);
 		}
 	}
 }

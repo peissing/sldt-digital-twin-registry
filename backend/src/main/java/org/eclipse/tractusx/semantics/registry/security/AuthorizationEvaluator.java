@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2021 Robert Bosch Manufacturing Solutions GmbH and others
- * Copyright (c) 2021 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024 Contributors to the Eclipse Foundation
+ * Copyright (c) 2024 Draexlmaier Group
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -22,15 +22,6 @@ package org.eclipse.tractusx.semantics.registry.security;
 
 import static org.eclipse.tractusx.semantics.registry.security.AuthorizationEvaluator.Roles.*;
 
-import java.util.Collection;
-import java.util.Map;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * This class contains methods validating JWT tokens for correctness and ensuring that the JWT token contains a desired role.
  * The methods are meant to be used in Spring Security expressions for RBAC on API operations.
@@ -48,7 +39,6 @@ import lombok.extern.slf4j.Slf4j;
  * the token will be considered invalid. Invalid tokens result in 403.
  *
  */
-@Slf4j
 public abstract class AuthorizationEvaluator {
 
    private final String clientId;
